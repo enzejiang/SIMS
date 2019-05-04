@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/view/productManager/welcome.jsp=UTF-8
+encoding//src/com/lizhou/dao/impl/BaseDaoImpl.java=UTF-8
+encoding//src/com/lizhou/service/SystemService.java=UTF-8
+encoding//src/com/lizhou/servlet/SystemServlet.java=UTF-8
+encoding//src/com/xingtu/servlet/SystemServlet.java=UTF-8
