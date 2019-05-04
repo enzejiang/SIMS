@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>学生列表</title>
+	<title>待报名学生列表</title>
 	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
@@ -20,7 +20,7 @@
 	        collapsible : false,//是否可折叠的 
 	        fit : true,//自动大小 
 	        method : "post",
-	        url : "StudentServlet?method=getGrid&t="+new Date().getTime(),
+	        url : "SchoolTimetableServlet?method=getGrid&t=" + new Date().getTime(),
 	        idField : 'id', 
 	        singleSelect : false,//是否单选 
 	        pagination : false,//分页控件 

@@ -26,7 +26,7 @@
 						{"menuid":"2","icon":"","menuname":"学生信息管理",
 							"menus":[
 									{"menuid":"21","menuname":"学生基本信息","icon":"icon-user-student","url":"StudentServlet?method=toStudentListView"},
-									{"menuid":"22","menuname":"学生课程报名","icon":"icon-user-student","url":"StudentServlet?method=toCourseRegist"},
+									{"menuid":"22","menuname":"学生课程报名","icon":"icon-user-student","url":"SchoolTimetableServlet?method=toStudentCourseEnrollmentListView"},
 									{"menuid":"23","menuname":"学生课程续费","icon":"icon-user-student","url":"StudentServlet?method=toStudentListView"}
 								]
 						},
@@ -123,7 +123,7 @@
 		</div>
     </div>
 	
-	<iframe width=0 height=0 src="refresh.jsp"></iframe>
+	<!-- <iframe width=0 height=0 src="refresh.jsp"></iframe> -->
 	
 </body>
 </html>

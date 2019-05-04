@@ -27,10 +27,7 @@ public class StudentServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		if ("toStudentListView".equalsIgnoreCase(method)) { //转发到学生列表页
 			request.getRequestDispatcher("/WEB-INF/view/student/studentList.jsp").forward(request, response);
-		}  
-		if ("toCourseRegist".equalsIgnoreCase(method)) { //转发到学生列表页
-			request.getRequestDispatcher("/WEB-INF/view/student/CourseRegist.jsp").forward(request, response);
-		}  
+		}
 	}
 	
 	
@@ -96,6 +93,7 @@ public class StudentServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
 	private void modify(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String code = request.getParameter("code");
 		String name = request.getParameter("name");
