@@ -42,13 +42,18 @@ public class EncodeFilter implements Filter {
 		//设置编码格式
 		request.setCharacterEncoding("UTF-8");
 		
-		/********************  资源响应设置：windows系统使用如下设置	*******************/
-		//设置响应时的编码格式和放行资源的类型（比如："text/html"或者"text/css"） 。疑虑：此处是否只应该放行"text/html"和"text/css"两种类型的资源？
-		response.setContentType("text/html; charset=utf-8");
 		
-		/********************  资源响应设置：linux系统使用如下设置	*******************/
-//		String contentType = request.getHeader("Accept") == null ? "text/html" : request.getHeader("Accept");
-//		response.setContentType(contentType + "; charset=utf-8");
+		String os = System.getProperty("os.name"); 
+		System.out.println("***************************************************\n当前操作系统："+ os);
+		//设置响应时的编码格式和响应资源的类型（比如："text/html"或者"text/css"） 。
+		if (os.toLowerCase().startsWith("win") && os.toLowerCase().contains("win")) {  
+			// 资源响应设置：windows系统使用如下设置
+			response.setContentType("text/html; charset=utf-8");
+		} else {
+			// 资源响应设置：其他操作系统使用如下设置
+			String contentType = request.getHeader("Accept") == null ? "text/html" : request.getHeader("Accept");
+			response.setContentType(contentType + "; charset=utf-8");
+		}
 		
 		//放行资源
 		chain.doFilter(request, response);
