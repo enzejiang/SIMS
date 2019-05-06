@@ -46,17 +46,17 @@ public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 
 	@Override
 	public void delete(Integer id) {
-		this.dao.delete("DELETE FROM S_SCHOOLTIMETABLE WHERE ID = ?", new Object[]{id});
+		this.dao.delete("DELETE FROM S_SCHOOL_TIMETABLE WHERE ID = ?", new Object[]{id});
 	}
 
 	@Override
 	public void deleteAllByStudentId(Integer studentId) {
-		this.dao.delete("DELETE FROM S_SCHOOLTIMETABLE WHERE STUDENTID = ?", new Object[]{studentId});
+		this.dao.delete("DELETE FROM S_SCHOOL_TIMETABLE WHERE STUDENTID = ?", new Object[]{studentId});
 	}
 
 	@Override
 	public void updateEndDate(Integer id, String newEndDate) {
-		this.dao.update("UPDATE S_SCHOOLTIMETABLE SET ENDDATE=? WHERE ID=?", new Object[]{newEndDate, id});
+		this.dao.update("UPDATE S_SCHOOL_TIMETABLE SET ENDDATE=? WHERE ID=?", new Object[]{newEndDate, id});
 
 	}
 	
@@ -64,13 +64,14 @@ public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 	private void save(Classes classes, Course course, Student student, String startDate, String endDate) {
 		if (classes != null && course != null && student != null) {
 			StringBuffer sql = new StringBuffer("");
-			sql.append("INSERT INTO S_SCHOOLTIMETABLE(");
+			sql.append("INSERT INTO S_SCHOOL_TIMETABLE(");
 			sql.append("CLASSESID, CLASSESNAME, COURSEID, COURSENAME, STUDENTID, STUDENTCODE, STUDENTNAME, STUDENTGENDER, STARTDATE, ENDDATE");
 			sql.append(") VALUE(");
 			sql.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
 			sql.append(")");
 			this.dao.insertReturnKeys(sql.toString(), new Object[]{classes.getId(), classes.getName(), course.getId(), course.getName(), 
 					student.getId(), student.getCode(), student.getName(), student.getGender(), startDate, endDate});
+			System.out.println("SQL：" + sql.toString());
 		}
 	}
 

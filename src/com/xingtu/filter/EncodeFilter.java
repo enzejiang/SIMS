@@ -44,9 +44,8 @@ public class EncodeFilter implements Filter {
 		
 		
 		String os = System.getProperty("os.name"); 
-		System.out.println("***************************************************\n当前操作系统："+ os);
 		//设置响应时的编码格式和响应资源的类型（比如："text/html"或者"text/css"） 。
-		if (os.toLowerCase().startsWith("win") && os.toLowerCase().contains("win")) {  
+		if (os.toLowerCase().contains("win")) {  
 			// 资源响应设置：windows系统使用如下设置
 			response.setContentType("text/html; charset=utf-8");
 		} else {

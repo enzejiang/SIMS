@@ -145,4 +145,19 @@ public interface IStudentService {
 	 */
 	Student getByCode(String code);
 	
+	/**
+	 * 名称：getStudentsNotINClasses
+	 * <br>
+	 * 描述：查找不在指定班级里的学生
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月6日 下午8:25:37
+	 * <br>
+	 * 返回值类型：List<Object>
+	 * @throws TODO
+	 * @param classesId
+	 * @return
+	 */
+	List<Object> getStudentsNotINClasses(Integer classesId);
+	
 }

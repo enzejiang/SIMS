@@ -14,8 +14,9 @@
 	$(function() {	
 		//datagrid初始化 
 	    $('#dataList').datagrid({
-	        title : '课程报名页面', 
+	        title : '学生课程报名列表', 
 	        iconCls : 'icon-more',//图标 
+	        loadMsg : "正在加载数据，请稍后...",
 	        border : true, 
 	        collapsible : false,//是否可折叠的 
 	        fit : true,//自动大小 
@@ -29,7 +30,7 @@
 	        sortOrder : 'DESC', 
 	        remoteSort : false,
 	        columns: [[  
-				/* {field:'chk',checkbox: true,width:50}, */
+				{field:'chk',checkbox: true,width:50},
  		        {field:'id',title:'ID', hidden:true, sortable: true},    
  		        {field:'code',title:'学号',width:200, sortable: true},    
  		        {field:'name',title:'姓名',width:200},
@@ -37,127 +38,73 @@
  		        {field:'parentPhone',title:'父母电话',width:150},
  		        {field:'rigstTime',title:'报名时间',width:150},
  		       	{field:'paymentday',title:'下次缴费时间',width:150},
- 		       	{field:'graduationTime',title:'毕业时间',width:150},
- 		       
- 		        /* {field:'clazz',title:'班级',width:150, 
- 		        	formatter: function(value,row,index){
- 						if (row.clazz){
- 							return row.clazz.name;
- 						} else {
- 							return value;
- 						}
- 					}
-				},
- 		        {field:'grade',title:'年级',width:150, 
-					formatter: function(value,row,index){
- 						if (row.grade){
- 							return row.grade.name;
- 						} else {
- 							return value;
- 						}
- 					}	
- 		       	}, */
+ 		       	{field:'graduationTime',title:'毕业时间',width:150}
 	 		]], 
 	        toolbar: "#toolbar"
+	    });
+	    
+		// 点击报名按钮
+	    $("#commit_btn").click(function() {
+	    	var classesId = $("#classesId").combobox("getValue");
+	    	var startDate = $("#startDate").datebox("getValue");
+	    	var endDate = $("#endDate").datebox("getValue");
+	    	
+	    	if (!classesId) {
+	    		$.messager.alert("提示", "请选择报名班级！", "info");
+	    		return false;
+	    	}
+	    	
+	    	if (!startDate) {
+	    		$.messager.alert("提示", "请选择课程开始日期！", "info");
+	    		return false;
+	    	}
+	    	
+	    	if (!endDate) {
+	    		$.messager.alert("提示", "请选择课程结束日期！", "info");
+	    		return false;
+	    	}
+	    	
+	    	var rows = $("#dataList").datagrid("getSelections");
+	    	console.log(rows.length);
+	    	if (!rows || rows.length < 1) {
+	    		$.messager.alert("提示", "请在列表中勾选需要报名的学生！", "info");
+	    		return false;
+	    	}
+	    	
+	    	var ids = [];
+        	$(rows).each(function(i, row) {
+        		ids[i] = row.id;
+        	});
+	    	
+	    	var params = {
+    			classesId : classesId,
+    			startDate : startDate,
+    			endDate : endDate,
+    			ids : ids
+	    	};
+	    	
+	    	$.ajax({
+				type: "post",
+				url: "SchoolTimetableServlet?method=insert",
+				data: params,
+				success: function(data) {
+					var rsp = $.parseJSON(data);
+					if (rsp && rsp.status == "true") {
+						$.messager.alert("提示", rsp.msg, "info");
+						//刷新表格
+						excuteQuery();
+					} else {
+						$.messager.alert("提示", rsp.msg, "warning");
+						return;
+					}
+				}
+			});
+	    	
 	    }); 
-		
-	    //设置分页控件 
-	    /* var p = $('#dataList').datagrid('getPager'); 
-	    $(p).pagination({ 
-	        pageSize: 10,//每页显示的记录条数，默认为10 
-	        pageList: [10,20,30,50,100],//可以设置每页记录条数的列表 
-	        beforePageText: '第',//页数文本框前显示的汉字 
-	        afterPageText: '页    共 {pages} 页', 
-	        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
-	    });  */
 	    
-	    //设置工具类按钮
-	    $("#bao_ming").click(function(){
-	    	var selectRows = $("#dataList").datagrid("getSelections");
-        	var selectLength = selectRows.length;
-        	if (selectLength == 0) {
-            	$.messager.alert("消息提醒", "请选择数据进行修改!", "warning");
-        	}
-        	else
-        		$("#bao_ming_Dialog").dialog("open");
-	    });
-	    
-	    $("commit_btn").click(function(){
-	    	
-	    	$('#dataList').datagrid("reload");
-	    	
-	    });
-	    
-	  	//课程报名窗口
-	    $("#bao_ming_Dialog").dialog({
-	    	title: "学生课程报名",
-	    	width: 750,
-	    	height: 560,
-	    	iconCls: "icon-edit",
-	    	modal: true,
-	    	collapsible: false,
-	    	minimizable: false,
-	    	maximizable: false,
-	    	draggable: true,
-	    	closed: true,
-	    	buttons: [
-	    		{
-					text:'修改',
-					plain: true,
-					iconCls:'icon-user_edit',
-					handler:function() {
-						var validate = $("#bao_ming_Form").form("validate");
-						if (!validate) {
-							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
-							return;
-						} else	{
-							$.ajax({
-								type : "post",
-								url : "StudentServlet?method=modify",
-								data: $("#bao_ming_Form").serialize(),
-								success: function(data) {
-									var rsp = $.parseJSON(data);
-									if (rsp.status == "true") {
-										$.messager.alert("消息提醒", rsp.msg, "info");
-										//关闭窗口
-										$("#bao_ming_Dialog").dialog("close");
-										//清空原表格数据
-										$("#reset").trigger("click");
-										//重新刷新页面数据
-							  			$('#dataList').datagrid("reload");
-										
-									} else{
-										$.messager.alert("消息提醒", rsp.msg, "warning");
-										return;
-									}
-								}
-							});
-						}
-					}
-				},
-				{
-					text : '重置',
-					plain : true,
-					iconCls : 'icon-reload',
-					handler : function() {
-						$("#reset").trigger("click");
-					}
-				},
-			],
-	        onBeforeOpen: function(){
-	        		var selectRow = $("#dataList").datagrid("getSelected");
-            		//设置值
-            		//$("#bm_id").textbox('setValue', selectRow.id);
-    				$("#bm_code").textbox('setValue', selectRow.code);
-    				$("#bm_name").textbox('setValue', selectRow.name);
-    				$("#bm_sex").textbox('setValue', selectRow.gender);
-    				$("#bm_parent_phone").textbox('setValue', selectRow.parentPhone);
-    				$("#bm_parent_wechat").textbox('setValue', selectRow.parentWechat);
-			}
-	    });
 	  	
-	  //下拉框通用属性
-	  	$("#chooseClass, #add_clazzList").combobox({
+	  	//下拉框通用属性
+	  	$("#classesId").combobox({
 	  		width: "200",
 	  		height: "30",
 	  		valueField: "id",
@@ -167,91 +114,46 @@
 	  		method: "post",
 	  	});
 	  
-	  	$("#chooseClass").combobox({
-	  		url: "ClassesServlet?method=getGrid&t="+new Date().getTime(),
-	  		onLoadSuccess: function(){
+	  	$("#classesId").combobox({
+	  		url: "ClassesServlet?method=getGrid&t=" + new Date().getTime(),
+	  		onLoadSuccess: function() {
 		  		//默认选择第一条数据
-				var data = $(this).combobox("getData");;
+				var data = $(this).combobox("getData");
 				$(this).combobox("setValue", data[0].id);
+	  		},
+	  		onChange : function(newValue, oldValue) {
+	  			excuteQuery();
 	  		}
 	  	});
 	   
 	});
+	
+	function excuteQuery() {
+		var classesId = $("#classesId").combobox("getValue");
+    	var params = {
+			classesId : classesId
+    	};
+    	$('#dataList').datagrid('options').queryParams = params;
+    	$('#dataList').datagrid("reload");
+	};
 	</script>
 </head>
 <body>
-	<!-- 学生列表 -->
-	<table id="dataList" cellspacing="0" cellpadding="0"> 
-	</table>
+	<!-- 待报名学生列表 -->
+	<table id="dataList" cellspacing="0" cellpadding="0"> </table>
 	
 	<!-- 工具栏 -->
 	<div id="toolbar">
-		<div style="float: left;"><a id="bao_ming" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">报名</a></div>
-		<div style="float: left;" class="datagrid-btn-separator"></div>
-		<div style="margin: 0 10px 0 10px">查询条件：
-			<select id="search_condition" class="easyui-combobox" 
-			data-options="editable: false, panelHeight: 50, width: 60, height: 20" name="condition_kind">
-			<option value="学号">学号</option>
-			<option value="名字">名字</option>
-			</select>
-			<input id="search_input" class="easyui-textbox" name="condition_value" data-options="required:true, missingMessage:'请填写学号或姓名'" />
-			<button id="commit_btn"  type="button">查询</button>
+		<div style="margin: 0 10px 0 10px">
+			报名班级：<input id="classesId" name="classesId" style="width: 200px; height: 30px;" class="easyui-combobox" type="text" data-options="editable: false"/>
+			开始日期：<input id="startDate" name="startDate" style="width: 200px; height: 30px;" class="easyui-datebox" type="text" data-options="editable: false"/>
+			结束日期：<input id="endDate" name="endDate" style="width: 200px; height: 30px;" class="easyui-datebox" type="text" data-options="editable: false"/>
+			<button id="commit_btn"  type="button" class="easyui-linkbutton">报  名</button>
 		</div>
 		
 		<!-- <div style="float: left; margin: 0 10px 0 10px">年级：<input id="gradeList" class="easyui-textbox" name="grade" /></div>
 		<div style="margin-left: 10px;">班级：<input id="clazzList" class="easyui-textbox" name="clazz" /></div> -->
 	
 	</div>
-	
-	<!-- 添加学生窗口 -->
-	<div id="bao_ming_Dialog" style="padding: 10px">  
-		<div style="float: right; margin: 20px 20px 0 0; width: 200px; border: 1px solid #EBF3FF" id="photo">
-	    	<img alt="照片" style="max-width: 200px; max-height: 400px;" title="照片" src="photo/student.jpg" />
-	    </div> 
-    	<form id="bao_ming_Form" method="post">
-	    	<table cellpadding="8" >
-	    		<tr>
-	    			<td colspan="2">
-	    				<!--用来清空表单数据-->
-						<input type="reset" id = "reset" style="display: none;" />
-	    			</td>
-	    		</tr>
-	    		<tr>
-	    			<td>学号:</td>
-	    			<td>
-	    				<input id="bm_code" class="easyui-textbox" style="width: 200px; height: 30px;" type="text" name="code"  readonly="readonly"/>
-	    			</td>
-	    		</tr>
-	    		<tr>
-	    			<td>姓名:</td>
-	    			<td><input id="bm_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name"  readonly="readonly"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>性别:</td>
-	    			<td><input id="bm_sex" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="gender"  readonly="readonly"/></td></td>
-	    			<!--  <td><select id="bm_sex" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 60, height: 30" name="gender">
-	    			<option value="男">男</option><option value="女">女</option></select></td> -->
-	    		</tr>
-	    		<tr>
-	    			<td>父母电话:</td>
-	    			<td><input id="bm_parent_phone" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="parentPhone" validType="mobile"   readonly="readonly"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>父母微信:</td>
-	    			<td><input id="bm_parent_wechat" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="parentWechat"  readonly="readonly"/></td>
-	    		</tr>
-	    		
-	    		<tr>
-	    			<td>报名班级:</td>
-	    			<td colspan="4"><input id="chooseClass" style="width: 200px; height: 30px;" class="easyui-combobox" type="text" name="chooseClass" precision="1" data-options="editable: false"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>下次缴费时间:</td>
-	    			<td><input id="bm_paymentday" style="width: 200px; height: 30px;" class="easyui-datebox" name="paymentday" /></td>
-	    		</tr>
-	    	</table>
-	    </form>
-	</div>
-	
 </body>
 </html>

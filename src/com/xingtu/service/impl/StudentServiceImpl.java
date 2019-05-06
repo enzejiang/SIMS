@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.xingtu.bean.Student;
-import com.xingtu.bean.Teacher;
 import com.xingtu.dao.IBaseDao;
 import com.xingtu.dao.impl.BaseDaoImpl;
 import com.xingtu.service.IStudentService;
@@ -89,12 +88,20 @@ public class StudentServiceImpl implements IStudentService {
 
 	@Override
 	public Student getById(Integer id) {
-		return (Student)this.dao.getObject(Teacher.class, "SELECT * FROM S_STUDENT WHERE ID = ?", new Object[]{id});
+		return (Student)this.dao.getObject(Student.class, "SELECT * FROM S_STUDENT WHERE ID = ?", new Object[]{id});
 	}
 
 	@Override
 	public Student getByCode(String code) {
-		return (Student)this.dao.getObject(Teacher.class, "SELECT * FROM S_STUDENT WHERE CODE = ?", new Object[]{code});
+		return (Student)this.dao.getObject(Student.class, "SELECT * FROM S_STUDENT WHERE CODE = ?", new Object[]{code});
+	}
+
+	@Override
+	public List<Object> getStudentsNotINClasses(Integer classesId) {
+		List<Object> list = this.dao.getList(Student.class, "SELECT * FROM S_STUDENT A WHERE A.ID NOT IN ("
+				+ "SELECT B.STUDENTID FROM S_SCHOOL_TIMETABLE B WHERE B.CLASSESID = ?) ORDER BY A.`NAME`", new Object[]{classesId});
+		
+		return list;
 	}
 
 }

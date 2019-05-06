@@ -3,7 +3,6 @@ package com.xingtu.service.impl;
 import java.util.List;
 
 import com.xingtu.bean.Classes;
-import com.xingtu.bean.Teacher;
 import com.xingtu.dao.IBaseDao;
 import com.xingtu.dao.impl.BaseDaoImpl;
 import com.xingtu.service.IClassesService;
@@ -55,7 +54,7 @@ public class ClassesServiceImpl implements IClassesService {
 
 	@Override
 	public Classes getById(Integer id) {
-		return (Classes)this.dao.getObject(Teacher.class, "SELECT * FROM C_CLASSES WHERE ID = ?", new Object[]{id});
+		return (Classes)this.dao.getObject(Classes.class, "SELECT * FROM C_CLASSES WHERE ID = ?", new Object[]{id});
 	}
 
 }

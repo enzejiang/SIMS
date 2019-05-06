@@ -39,7 +39,9 @@
     <url-pattern>/StudentServlet</url-pattern>
     <url-pattern>/SystemServlet</url-pattern>
     <url-pattern>/TeacherServlet</url-pattern>
+    <url-pattern>/SchoolTimetableServlet</url-pattern>
   </filter-mapping>
+  
   <servlet>
     <description>登录</description>
     <servlet-name>LoginServlet</servlet-name>
@@ -49,6 +51,7 @@
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>传照片</description>
     <servlet-name>PhotoServlet</servlet-name>
@@ -58,6 +61,7 @@
     <servlet-name>PhotoServlet</servlet-name>
     <url-pattern>/PhotoServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>学生信息管理</description>
     <servlet-name>StudentServlet</servlet-name>
@@ -67,6 +71,7 @@
     <servlet-name>StudentServlet</servlet-name>
     <url-pattern>/StudentServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>教师信息管理</description>
     <servlet-name>TeacherServlet</servlet-name>
@@ -76,6 +81,7 @@
     <servlet-name>TeacherServlet</servlet-name>
     <url-pattern>/TeacherServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>年级</description>
     <servlet-name>GradeServlet</servlet-name>
@@ -85,6 +91,7 @@
     <servlet-name>GradeServlet</servlet-name>
     <url-pattern>/GradeServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>班级</description>
     <servlet-name>ClassesServlet</servlet-name>
@@ -94,6 +101,7 @@
     <servlet-name>ClassesServlet</servlet-name>
     <url-pattern>/ClassesServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>课程</description>
     <servlet-name>CourseServlet</servlet-name>
@@ -103,6 +111,17 @@
     <servlet-name>CourseServlet</servlet-name>
     <url-pattern>/CourseServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <description>课程表</description>
+    <servlet-name>SchoolTimetableServlet</servlet-name>
+    <servlet-class>com.xingtu.servlet.SchoolTimetableServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SchoolTimetableServlet</servlet-name>
+    <url-pattern>/SchoolTimetableServlet</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <description>系统</description>
     <servlet-name>SystemServlet</servlet-name>
@@ -112,6 +131,7 @@
     <servlet-name>SystemServlet</servlet-name>
     <url-pattern>/SystemServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>考试</description>
     <servlet-name>ExamServlet</servlet-name>
@@ -121,6 +141,7 @@
     <servlet-name>ExamServlet</servlet-name>
     <url-pattern>/ExamServlet</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <description>成绩</description>
     <servlet-name>ScoreServlet</servlet-name>
@@ -130,7 +151,8 @@
     <servlet-name>ScoreServlet</servlet-name>
     <url-pattern>/ScoreServlet</url-pattern>
   </servlet-mapping>
-    <servlet>
+  
+  <servlet>
     <description>比赛</description>
     <servlet-name>GameServlet</servlet-name>
     <servlet-class>com.xingtu.servlet.GameServlet</servlet-class>
