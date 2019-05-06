@@ -86,7 +86,7 @@ public interface ISchoolTimetableService {
 	/**
 	 * 名称：updateEndDate
 	 * <br>
-	 * 描述：更新学生课程到期日期，学生给课程续费
+	 * 描述：更新单个学生课程到期日期，学生给课程续费
 	 * <br>
 	 * 创建人：zml
 	 * 创建时间：2019年4月29日 上午1:07:44
@@ -97,4 +97,36 @@ public interface ISchoolTimetableService {
 	 * @param newEndDate
 	 */
 	void updateEndDate(Integer id, String newEndDate);
+	
+	/**
+	 * 名称：updateEndDate
+	 * <br>
+	 * 描述：更新多个学生课程到期日期，学生给课程续费
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月7日 上午2:05:41
+	 * <br>
+	 * 返回值类型：void
+	 * @throws TODO
+	 * @param ids
+	 * @param newEndDate
+	 */
+	void updateEndDate(String ids, String newEndDate);
+	
+	/**
+	 * 名称：getCourseRenewalsByMultiConds
+	 * <br>
+	 * 描述：按给定条件查询学生课程表信息
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月7日 上午1:00:40
+	 * <br>
+	 * 返回值类型：List<Object>
+	 * @throws TODO
+	 * @param classesId
+	 * @param courseName
+	 * @param studentName
+	 * @return
+	 */
+	List<Object> getCourseRenewalsByMultiConds(Integer classesId, String courseName, String studentName);
 }

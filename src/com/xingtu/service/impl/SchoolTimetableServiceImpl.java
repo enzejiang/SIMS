@@ -1,9 +1,11 @@
 package com.xingtu.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.xingtu.bean.Classes;
 import com.xingtu.bean.Course;
+import com.xingtu.bean.SchoolTimetable;
 import com.xingtu.bean.Student;
 import com.xingtu.dao.IBaseDao;
 import com.xingtu.dao.impl.BaseDaoImpl;
@@ -56,8 +58,17 @@ public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 
 	@Override
 	public void updateEndDate(Integer id, String newEndDate) {
-		this.dao.update("UPDATE S_SCHOOL_TIMETABLE SET ENDDATE=? WHERE ID=?", new Object[]{newEndDate, id});
-
+		String sql = "UPDATE S_SCHOOL_TIMETABLE SET ENDDATE=? WHERE ID=?";
+		this.dao.update(sql, new Object[]{newEndDate, id});
+		System.out.println("Method[updateEndDate]--SQL：" + sql);
+	}
+	
+	
+	@Override
+	public void updateEndDate(String ids, String newEndDate) {
+		String sql = "UPDATE S_SCHOOL_TIMETABLE SET ENDDATE=? WHERE ID IN (" + ids + ")";
+		this.dao.update(sql, new Object[]{newEndDate});
+		System.out.println("Method[updateEndDate]--SQL：" + sql);
 	}
 	
 	
@@ -73,6 +84,30 @@ public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 					student.getId(), student.getCode(), student.getName(), student.getGender(), startDate, endDate});
 			System.out.println("SQL：" + sql.toString());
 		}
+	}
+
+	@Override
+	public List<Object> getCourseRenewalsByMultiConds(Integer classesId, String courseName, String studentName) {
+		StringBuffer sql = new StringBuffer("SELECT * FROM S_SCHOOL_TIMETABLE S WHERE 1=1 ");
+		List<Object> param = new ArrayList<Object>();
+		
+		if (classesId != null) {
+			sql.append("AND	S.CLASSESID = ? ");
+			param.add(classesId);
+		}
+		
+		if (courseName != null && !"".equals(courseName)) {
+			sql.append("AND S.COURSENAME LIKE ? ");
+			param.add("%" + courseName + "%");
+		}
+		
+		if (studentName != null && !"".equals(studentName)) {
+			sql.append("AND S.STUDENTNAME LIKE ? ");
+			param.add("%" + studentName + "%");
+		}
+		
+		System.out.println("Method[getCourseRenewalsByMultiConds]--SQL：" + sql.toString());
+		return this.dao.getList(SchoolTimetable.class, sql.toString(), param);
 	}
 
 }

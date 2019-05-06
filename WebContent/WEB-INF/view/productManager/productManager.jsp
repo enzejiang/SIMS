@@ -27,7 +27,7 @@
 							"menus":[
 									{"menuid":"21","menuname":"学生基本信息","icon":"icon-user-student","url":"StudentServlet?method=toStudentListView"},
 									{"menuid":"22","menuname":"学生课程报名","icon":"icon-user-student","url":"SchoolTimetableServlet?method=toStudentCourseEnrollmentListView"},
-									{"menuid":"23","menuname":"学生课程续费","icon":"icon-user-student","url":"StudentServlet?method=toStudentListView"}
+									{"menuid":"23","menuname":"学生课程续费","icon":"icon-user-student","url":"SchoolTimetableServlet?method=toCourseRenewals"}
 								]
 						},
 						
