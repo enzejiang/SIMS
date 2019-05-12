@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.xingtu.bean.Teacher;
 
+import net.sf.json.JSONObject;
+
 /**
  * 项目名称：ssms
  * 类名称：ITeacherService
@@ -107,5 +109,23 @@ public interface ITeacherService {
 	 * @return
 	 */
 	Teacher getByCode(String code);
+	
+	/**
+	 * 名称：getTeacherCourseByMultiConds
+	 * <br>
+	 * 描述：按给定条件查询教师所教的课程信息
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月12日 下午11:29:43
+	 * <br>
+	 * 返回值类型：List<JSONObject>
+	 * @throws TODO
+	 * @param classesId
+	 * @param courseName
+	 * @param teacherCode
+	 * @param teacherName
+	 * @return
+	 */
+	List<JSONObject> getTeacherCourseByMultiConds(Integer classesId, String courseName, String teacherCode, String teacherName);
 
 }

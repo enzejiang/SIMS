@@ -1,5 +1,6 @@
 package com.xingtu.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.xingtu.bean.Teacher;
@@ -7,6 +8,8 @@ import com.xingtu.dao.IBaseDao;
 import com.xingtu.dao.impl.BaseDaoImpl;
 import com.xingtu.service.IClassesService;
 import com.xingtu.service.ITeacherService;
+
+import net.sf.json.JSONObject;
 
 public class TeacherServiceImpl implements ITeacherService {
 	private IBaseDao dao = new BaseDaoImpl();
@@ -54,6 +57,46 @@ public class TeacherServiceImpl implements ITeacherService {
 	@Override
 	public Teacher getByCode(String code) {
 		return (Teacher)this.dao.getObject(Teacher.class, "SELECT * FROM T_TEACHER WHERE CODE = ?", new Object[]{code});
+	}
+
+	@Override
+	public List<JSONObject> getTeacherCourseByMultiConds(Integer classesId, String courseName, String teacherCode, String teacherName) {
+		StringBuffer sql = new StringBuffer("");
+		sql.append("SELECT");
+		sql.append(" C.`NAME` C_NAME, C.STARTTIME, C.ENDTIME, G.`NAME` G_NAME, D.`NAME` D_NAME, T.* ");
+		sql.append("FROM");
+		sql.append(" C_CLASSES C ");
+		sql.append("LEFT JOIN T_TEACHER T ON T.ID = C.TEACHERID ");
+		sql.append("LEFT JOIN G_GRADE G ON G.ID = C.GRADEID ");
+		sql.append("LEFT JOIN C_COURSE D ON D.ID = C.COURSEID ");
+		sql.append("WHERE 1=1 ");
+		
+		List<Object> param = new ArrayList<Object>();
+		
+		if (classesId != null) {
+			sql.append("AND c.id = ? ");
+			param.add(classesId);
+		}
+		
+		if (courseName != null && !"".equals(courseName)) {
+			sql.append("AND D.`NAME` LIKE ? ");
+			param.add("%" + courseName + "%");
+		}
+		
+		if (teacherCode != null && !"".equals(teacherCode)) {
+			sql.append("AND T.`CODE` LIKE ? ");
+			param.add("%" + teacherCode + "%");
+		}
+		
+		if (teacherName != null && !"".equals(teacherName)) {
+			sql.append("AND T.`NAME` LIKE ? ");
+			param.add("%" + teacherName + "%");
+		}
+		
+		sql.append("ORDER BY ID, D_NAME");
+		
+		System.out.println("Method[getTeacherCourseByMultiConds]--SQL：" + sql.toString());
+		return this.dao.getList(sql.toString(), param);
 	}
 
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 @SuppressWarnings("rawtypes")
 public interface IBaseDao {
 	
@@ -233,5 +235,21 @@ public interface IBaseDao {
 	 * @return
 	 */
 	List<String> getColumn(String sql, Object[] param);
+	
+	/**
+	 * 名称：getColumns
+	 * <br>
+	 * 描述：获取数据集合，把SQL查询结果的每一行所有列拼接成JSONObject（其中SQL列名为key，列对应的值为value），然后封装成list集合
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月13日 上午2:02:42
+	 * <br>
+	 * 返回值类型：List<JSONObject>
+	 * @throws TODO
+	 * @param sql
+	 * @param param
+	 * @return
+	 */
+	List<JSONObject> getList(String sql, List<Object> param);
 	
 }

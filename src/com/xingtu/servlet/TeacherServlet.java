@@ -37,8 +37,8 @@ public class TeacherServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		if ("toTeacherListView".equalsIgnoreCase(method)) { //转发到教师列表页
 			request.getRequestDispatcher("/WEB-INF/view/teacher/teacherList.jsp").forward(request, response);
-		} else if ("toTeacherNoteListView".equalsIgnoreCase(method)) { //转发到教师列表页
-			request.getRequestDispatcher("/WEB-INF/view/teacher/teacherNoteList.jsp").forward(request, response);
+		} else if ("toTeacherCourseListView".equalsIgnoreCase(method)) { //转发到教师课程列表页
+			request.getRequestDispatcher("/WEB-INF/view/teacher/teacherCourseList.jsp").forward(request, response);
 		} else if ("toExamTeacherView".equalsIgnoreCase(method)) { //转发到教师列表页
 			request.getRequestDispatcher("/WEB-INF/view/teacher/examTeacherList.jsp").forward(request, response);
 		} else if ("toTeacherPersonalView".equalsIgnoreCase(method)) { //转发到教师列表页
@@ -56,7 +56,9 @@ public class TeacherServlet extends HttpServlet {
 			insert(request, response);
 		} else if ("delete".equalsIgnoreCase(method)) { // 删除教师
 			delete(request, response);
-		} 
+		} else if ("getTeacherCourseGrid".equalsIgnoreCase(method)) { // 获取教师课程
+			getTeacherCourseGrid(request, response);
+		}
 	}
 	
 	
@@ -123,6 +125,19 @@ public class TeacherServlet extends HttpServlet {
 			response.getWriter().write("false");
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void getTeacherCourseGrid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String classesIdStr = request.getParameter("classesId");
+		String courseName = request.getParameter("courseName");
+		String teacherCode = request.getParameter("teacherCode");
+		String teacherName = request.getParameter("teacherName");
+		
+		Integer classesId = StringUtils.isNotBlank(classesIdStr) ? Integer.parseInt(classesIdStr) : null;
+		List<JSONObject> result = service.getTeacherCourseByMultiConds(classesId, courseName, teacherCode, teacherName);
+		//返回数据
+		response.getWriter().write(JSONArray.fromObject(result).toString());
 	}
 	
 	

@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>待报名学生列表</title>
+	<title>教师课程列表</title>
 	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
@@ -14,31 +14,31 @@
 	$(function() {	
 		//datagrid初始化 
 	    $('#dataList').datagrid({
-	        title : '学生课程续费列表', 
+	        title : '教师课程列表', 
 	        iconCls : 'icon-more',//图标 
 	        loadMsg : "正在加载数据，请稍后...",
 	        border : true, 
 	        collapsible : false,//是否可折叠的 
 	        fit : true,//自动大小 
 	        method : "post",
-	        url : "SchoolTimetableServlet?method=getCourseRenewalsGrid&t=" + new Date().getTime(),
+	        url : "TeacherServlet?method=getTeacherCourseGrid&t=" + new Date().getTime(),
 	        idField : 'id', 
 	        singleSelect : false,//是否单选 
 	        pagination : false,//分页控件 
 	        rownumbers : true,//行号 
-	        sortName : 'id',
-	        sortOrder : 'DESC', 
 	        remoteSort : false,
 	        columns: [[  
-				{field:'chk',checkbox: true,width:50},
- 		        {field:'id',title:'ID', hidden:true, sortable: true},    
- 		        {field:'studentCode',title:'学号',width:200, sortable: true},    
- 		        {field:'studentName',title:'姓名',width:200},
- 		        {field:'studentGender',title:'性别',width:100},
- 		        {field:'classesName',title:'班级名称',width:150},
- 		        {field:'courseName',title:'课程名称',width:150},
- 		       	{field:'startDate',title:'课程开始日期',width:150},
- 		       	{field:'endDate',title:'课程到期日期',width:150}
+				/* {field:'chk',checkbox: true,width:50}, */
+ 		        {field:'id', hidden:true, sortable: true},    
+ 		        {field:'code',title:'教师编号',width:200, sortable: true},    
+ 		        {field:'name',title:'教师姓名',width:200},
+ 		        {field:'gender',title:'教师性别',width:100},
+ 		       	{field:'phone',title:'教师电话',width:100},
+ 		       	{field:'G_NAME',title:'年级',width:150},
+ 		        {field:'C_NAME',title:'班级名称',width:150},
+ 		        {field:'D_NAME',title:'课程名称',width:150},
+ 		       	{field:'STARTTIME',title:'开课时间',width:150},
+ 		       	{field:'ENDTIME',title:'结课时间',width:150}
 	 		]], 
 	        toolbar: "#toolbar"
 	    });
@@ -50,51 +50,9 @@
 		
 	 	// 清空查询条件
 	    $("#clear_btn").click(function() {
+	    	$("#classesId").combobox("setValue", "");
 	    	$("#query_form").get(0).reset();
 	    });
-	    
-		// 点击续费按钮
-	    $("#commit_btn").click(function() {
-	    	var endDate = $("#endDate").datebox("getValue");
-	    	
-	    	if (!endDate) {
-	    		$.messager.alert("提示", "请选择续费日期！", "info");
-	    		return false;
-	    	}
-	    	
-	    	var rows = $("#dataList").datagrid("getSelections");
-	    	if (!rows || rows.length < 1) {
-	    		$.messager.alert("提示", "请在列表中勾选需要续费的学生课程！", "info");
-	    		return false;
-	    	}
-	    	
-	    	var ids = [];
-        	$(rows).each(function(i, row) {
-        		ids[i] = row.id;
-        	});
-	    	var params = {
-    			endDate : endDate,
-    			ids : ids.join(",")
-	    	};
-	    	
-	    	$.ajax({
-				type: "post",
-				url: "SchoolTimetableServlet?method=updateSchoolTimetableEndDate",
-				data: params,
-				success: function(data) {
-					var rsp = $.parseJSON(data);
-					if (rsp && rsp.status == "true") {
-						$.messager.alert("提示", rsp.msg, "info");
-						//刷新表格
-						excuteQuery();
-					} else {
-						$.messager.alert("提示", rsp.msg, "warning");
-						return;
-					}
-				}
-			});
-	    	
-	    }); 
 	    
 	  	
 	  	//下拉框通用属性
@@ -125,11 +83,13 @@
 	function excuteQuery() {
 		var classesId = $("#classesId").combobox("getValue");
 		var courseName = $("#courseName").val();
-		var studentName = $("#studentName").val();
+		var teacherCode = $("#teacherCode").val();
+		var teacherName = $("#teacherName").val();
     	var params = {
 			classesId : classesId,
 			courseName : courseName,
-			studentName : studentName
+			teacherCode : teacherCode,
+			teacherName : teacherName
     	};
     	$('#dataList').datagrid('options').queryParams = params;
     	$('#dataList').datagrid("reload");
@@ -137,20 +97,19 @@
 	</script>
 </head>
 <body>
-	<!-- 学生待续费课程列表 -->
+	<!-- 教师课程列表 -->
 	<table id="dataList" cellspacing="0" cellpadding="0"> </table>
 	
 	<!-- 工具栏 -->
 	<div id="toolbar">
 		<form id="query_form" method="post" action=""  onsubmit="return false;">
 			<div style="margin: 0 20px 0 20px">
+				教师编号：<input id="teacherCode" name="teacherCode" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" data-options="editable: true"/>
+				教师姓名：<input id="teacherName" name="teacherName" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" data-options="editable: true"/>
 				班级：<input id="classesId" name="classesId" style="width: 200px; height: 30px;" class="easyui-combobox" type="text" data-options="editable: false"/>
 				课程名称：<input id="courseName" name="courseName" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" data-options="editable: true"/>
-				学生姓名：<input id="studentName" name="studentName" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" data-options="editable: true"/>
 				<button id="query_btn"  type="button" class="easyui-linkbutton">查&nbsp;&nbsp;询</button>
-				<button id="clear_btn"  type="button" class="easyui-linkbutton">清&nbsp;&nbsp;空</button>&nbsp;&nbsp;&nbsp;&nbsp;
-				续费日期：<input id="endDate" name="endDate" style="width: 200px; height: 30px;" class="easyui-datebox" type="text" data-options="editable: false"/>
-				<button id="commit_btn"  type="button" class="easyui-linkbutton">续 &nbsp;&nbsp;费</button>
+				<button id="clear_btn"  type="button" class="easyui-linkbutton">清&nbsp;&nbsp;空</button>
 			</div>
 		</form>
 	</div>

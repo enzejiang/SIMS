@@ -3,7 +3,9 @@ package com.xingtu.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,8 +14,10 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
-import com.xingtu.tools.MysqlTool;
 import com.xingtu.dao.IBaseDao;
+import com.xingtu.tools.MysqlTool;
+
+import net.sf.json.JSONObject;
 
 @SuppressWarnings(value={"unchecked", "rawtypes"})
 public class BaseDaoImpl implements IBaseDao {
@@ -281,6 +285,53 @@ public class BaseDaoImpl implements IBaseDao {
 				String account = rs.getString(1);
 				//添加到集合
 				list.add(account);
+			}
+			//关闭连接
+			MysqlTool.closeConnection();
+			MysqlTool.close(ps);
+			MysqlTool.close(rs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<JSONObject> getList(String sql, List<Object> param) {
+		String _sql = "SELECT * FROM (" + sql + ") Z ";
+		System.out.println("Method[getList]--SQL：" + _sql);
+		//数据集合
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		try {
+			//获取数据库连接
+			Connection conn = MysqlTool.getConnection();
+			//预编译
+			PreparedStatement ps = conn.prepareStatement(_sql);
+			//设置值
+			Object[] params = new Object[param.size()];
+			for (int i = 0; i < param.size(); i++) {
+				params[i] = param.get(i);
+			}
+			if (params != null && params.length > 0) {
+				for (int i = 0; i < params.length; i++) {
+					ps.setObject(i+1, params[i]);
+				}
+			}
+			//执行sql语句
+			ResultSet rs = ps.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			Integer columnCount = rsmd.getColumnCount();
+			//遍历结果集
+			while (rs.next()) {
+				//Map rsMap = new HashMap<String, Object>();
+				JSONObject jsonObj = new JSONObject();
+				for (Integer i=1; i <= columnCount; i++) {
+					String name = rsmd.getColumnName(i);
+					String typeName = rsmd.getColumnClassName(i);
+					//添加到集合
+					//rsMap.put(name, value);
+					jsonObj.element(name, rs.getObject(i, Class.forName(typeName)));
+				}
+				list.add(jsonObj);
 			}
 			//关闭连接
 			MysqlTool.closeConnection();
