@@ -41,7 +41,7 @@ public class EncodeFilter implements Filter {
 		
 		//设置编码格式
 		request.setCharacterEncoding("UTF-8");
-		
+		response.setCharacterEncoding("UTF-8");
 		
 		String os = System.getProperty("os.name"); 
 		//设置响应时的编码格式和响应资源的类型（比如："text/html"或者"text/css"） 。
