@@ -26,7 +26,7 @@ public interface IClassesService {
 	/**
 	 * 名称：getClasses
 	 * <br>
-	 * 描述：获取编辑列表
+	 * 描述：获取班级信息列表
 	 * <br>
 	 * 创建人：zml
 	 * 创建时间：2019年4月23日 上午1:01:42

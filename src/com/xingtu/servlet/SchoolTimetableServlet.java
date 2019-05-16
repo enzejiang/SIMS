@@ -17,6 +17,7 @@ import com.xingtu.service.impl.SchoolTimetableServiceImpl;
 import com.xingtu.service.impl.StudentServiceImpl;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class SchoolTimetableServlet extends HttpServlet {
 
@@ -54,6 +55,8 @@ public class SchoolTimetableServlet extends HttpServlet {
 			getCourseRenewalsGrid(request, response);
 		} else if ("updateSchoolTimetableEndDate".equalsIgnoreCase(method)) { // 更新课程结束日期、学生课程续费
 			updateSchoolTimetableEndDate(request, response);
+		} else if ("getClassesStudentGrid".equalsIgnoreCase(method)) { // 班级学生列表
+			getClassesStudentGrid(request, response);
 		}
 	}
 
@@ -151,6 +154,18 @@ public class SchoolTimetableServlet extends HttpServlet {
 			response.getWriter().write("{\"status\":\"false\", \"msg\":\"续费失败！\"}");
 		}
 		 
+	}
+	
+	
+	private void getClassesStudentGrid(HttpServletRequest request, HttpServletResponse response)  throws IOException  {
+		String classesIdStr = request.getParameter("classesId");
+		String courseName = request.getParameter("courseName");
+		String teacherName = request.getParameter("teacherName");
+		
+		Integer classesId = StringUtils.isNotBlank(classesIdStr) ? Integer.parseInt(classesIdStr) : null;
+		List<JSONObject> result = service.getClassesStudentsByMultiConds(classesId, courseName, teacherName);
+		//返回数据
+		response.getWriter().write(JSONArray.fromObject(result).toString());
 	}
 
 }

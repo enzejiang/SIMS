@@ -14,6 +14,8 @@ import com.xingtu.service.ICourseService;
 import com.xingtu.service.ISchoolTimetableService;
 import com.xingtu.service.IStudentService;
 
+import net.sf.json.JSONObject;
+
 public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 	private IBaseDao dao = new BaseDaoImpl();
 	private IStudentService studentService = new StudentServiceImpl();
@@ -108,6 +110,44 @@ public class SchoolTimetableServiceImpl implements ISchoolTimetableService {
 		
 		System.out.println("Method[getCourseRenewalsByMultiConds]--SQL：" + sql.toString());
 		return this.dao.getList(SchoolTimetable.class, sql.toString(), param);
+	}
+
+	@Override
+	public List<JSONObject> getClassesStudentsByMultiConds(Integer classesId, String courseName, String teacherName) {
+		StringBuffer sql = new StringBuffer("");
+		sql.append("SELECT");
+		sql.append(" C.ID id, S.ID schoolTimetableId, C.`NAME` classesName, G.`NAME` gradeName,");
+		sql.append(" D.`CODE` studentCode, D.`NAME` studentName, D.GENDER studentGender,");
+		sql.append(" S.COURSENAME courseName, C.STARTTIME startTime, C.ENDTIME endTime, T.`NAME` teacherName ");
+		sql.append("FROM");
+		sql.append(" S_SCHOOL_TIMETABLE S ");
+		sql.append("LEFT JOIN C_CLASSES C ON C.ID = S.CLASSESID ");
+		sql.append("LEFT JOIN S_STUDENT D ON D.ID = S.STUDENTID ");
+		sql.append("LEFT JOIN T_TEACHER T ON T.ID = C.TEACHERID ");
+		sql.append("LEFT JOIN G_GRADE G ON G.ID = C.GRADEID ");
+		sql.append("WHERE 1=1 ");
+		
+		List<Object> param = new ArrayList<Object>();
+		
+		if (classesId != null) {
+			sql.append("AND C.ID = ? ");
+			param.add(classesId);
+		}
+		
+		if (courseName != null && !"".equals(courseName)) {
+			sql.append("AND S.COURSENAME LIKE ? ");
+			param.add("%" + courseName + "%");
+		}
+		
+		if (teacherName != null && !"".equals(teacherName)) {
+			sql.append("AND T.`NAME` LIKE ? ");
+			param.add("%" + teacherName + "%");
+		}
+		
+		sql.append("ORDER BY C.`NAME`, D.`CODE` ");
+		
+		System.out.println("Method[getClassesStudentsByMultiConds]--SQL：" + sql.toString());
+		return this.dao.getList(sql.toString(), param);
 	}
 
 }

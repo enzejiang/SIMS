@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="easyui/js/validateExtends.js"></script>
+	<script type="text/javascript" src="common/export-util.js"></script>
 	<script type="text/javascript">
 	$(function() {	
 		//datagrid初始化 
@@ -73,19 +74,21 @@
 	    });  */
 	    
 	    //设置工具类按钮
-	    $("#add").click(function(){
+	    $("#add").click(function() {
 	    	$("#addDialog").dialog("open");
 	    });
 	    
-	    $("#edit").click(function(){
+	    $("#edit").click(function() {
 	    	var selectRows = $("#dataList").datagrid("getSelections");
         	var selectLength = selectRows.length;
         	if (selectLength == 0) {
             	$.messager.alert("消息提醒", "请选择数据进行修改!", "warning");
+        	} else {
+        		$("#editDialog").dialog("open");
         	}
-        	else
-	    		$("#editDialog").dialog("open");
+	    		
 	    });
+	    
 	    //删除
 	    $("#delete").click(function() {
 	    	var selectRows = $("#dataList").datagrid("getSelections");
@@ -120,6 +123,11 @@
             		}
             	});
             }
+	    });
+	    
+	    
+	    $("#export").click(function() {
+	    	NS.Common.ExportUtil.exportExcelByJSONConvertor("dataList", "学生基本信息", null);
 	    });
 	    
 	  	
@@ -265,10 +273,15 @@
 	<!-- 工具栏 -->
 	<div id="toolbar">
 		<div style="float: left;"><a id="add" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a></div>
-			<div style="float: left;" class="datagrid-btn-separator"></div>
+		<div style="float: left;" class="datagrid-btn-separator"></div>
+		
 		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a></div>
-			<div style="float: left;" class="datagrid-btn-separator"></div>
+		<div style="float: left;" class="datagrid-btn-separator"></div>
+		
 		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">删除</a></div>
+		<div style="float: left;" class="datagrid-btn-separator"></div>
+		
+		<div style="float: left;"><a id="export" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-print',plain:true">导出</a></div>
 		
 		<!-- <div style="float: left; margin: 0 10px 0 10px">年级：<input id="gradeList" class="easyui-textbox" name="grade" /></div>
 		<div style="margin-left: 10px;">班级：<input id="clazzList" class="easyui-textbox" name="clazz" /></div> -->

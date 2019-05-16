@@ -2,7 +2,7 @@
 <c3p0-config>
 	<default-config>
 		<property name="driverClass">com.mysql.jdbc.Driver</property>
-		<property name="jdbcUrl">jdbc:mysql://www.pocbitcoin.com:3306/tssms?serverTimezone=UTC&amp;characterEncoding=UTF-8</property>
+		<property name="jdbcUrl">jdbc:mysql://www.pocbitcoin.com:3306/tssms?serverTimezone=UTC&amp;characterEncoding=UTF-8&amp;useOldAliasMetadataBehavior=true</property>
 		<property name="user">root</property>
 		<property name="password">jyb94shuai</property>
 	</default-config>

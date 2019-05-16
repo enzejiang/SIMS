@@ -1,7 +1,7 @@
 var NS = NS || {};
 NS.Common = NS.Common || {};
 NS.Common.ExportUtil = (function($) {
-	function JSONToExcelConvertor(gridElementId, fileName, needPrintHiddenFildArr) {
+	function exportExcelByJSONConvertor(gridElementId, fileName, needPrintHiddenFildArr) {
         var footerRow = $("#" + gridElementId).datagrid('getFooterRows');
         var gridData = $("#"+gridElementId).datagrid('getData').rows;
         if (footerRow !=null) {
@@ -92,8 +92,7 @@ NS.Common.ExportUtil = (function($) {
 	
 	
 	/**
-	 * 这里返回的是字段名称和表头文字的键值对
-	 * 根据datagrid显示的表头，获取文字
+	 * 获取grid的表头用作导出Excel的列标题
 	 */
 	function getGridTitle(gridElementId, needPrintHiddenFilds) {
 	    var titlename = "{";
@@ -105,7 +104,7 @@ NS.Common.ExportUtil = (function($) {
 	        	var fild = option.field;
 	        	var isPrintHiddenFild = needPrintHiddenFilds[fild] ? true : false;
 	        	//过滤复选框和不需要打印的隐藏列
-	        	if (fild != "checkItem" && (option.hidden != true || isPrintHiddenFild)) {
+	        	if (fild != "chk" && (option.hidden != true || isPrintHiddenFild)) {
 	        		titlename += "\"" + fild + "\":\"" + option.title + "\",";
 	        	}
 	        }
@@ -129,6 +128,6 @@ NS.Common.ExportUtil = (function($) {
 	};
 	
 	return {
-		JSONToExcelConvertor : JSONToExcelConvertor
+		exportExcelByJSONConvertor : exportExcelByJSONConvertor
 	};
 })(jQuery);

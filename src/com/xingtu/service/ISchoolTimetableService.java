@@ -2,6 +2,10 @@ package com.xingtu.service;
 
 import java.util.List;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
+import net.sf.json.JSONObject;
+
 /**
  * 项目名称：ssms
  * 类名称：ISchoolTimetableService
@@ -129,4 +133,21 @@ public interface ISchoolTimetableService {
 	 * @return
 	 */
 	List<Object> getCourseRenewalsByMultiConds(Integer classesId, String courseName, String studentName);
+	
+	/**
+	 * 名称：getClassesStudentsByMultiConds
+	 * <br>
+	 * 描述：按给定条件查询班级学生信息
+	 * <br>
+	 * 创建人：zml
+	 * 创建时间：2019年5月16日 下午10:48:13
+	 * <br>
+	 * 返回值类型：List<JSONObject>
+	 * @throws TODO
+	 * @param classesId
+	 * @param courseName
+	 * @param teacherName
+	 * @return
+	 */
+	List<JSONObject> getClassesStudentsByMultiConds(Integer classesId, String courseName, String teacherName);
 }

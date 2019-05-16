@@ -41,6 +41,8 @@ public class ClassesServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		if ("toClassesListView".equalsIgnoreCase(method)){ // 班级列表页
 			request.getRequestDispatcher("/WEB-INF/view/other/classesList.jsp").forward(request, response);
+		} else if ("toClassesStudentListView".equalsIgnoreCase(method)) { // 班级学生列表
+			request.getRequestDispatcher("/WEB-INF/view/other/classesStudentList.jsp").forward(request, response);
 		}
 	}
 
@@ -48,13 +50,13 @@ public class ClassesServlet extends HttpServlet {
 		//获取请求的方法
 		String method = request.getParameter("method");
 		
-		if("getGrid".equalsIgnoreCase(method)){ // 获取所有班级
+		if ("getGrid".equalsIgnoreCase(method)) { // 获取所有班级
 			getGrid(request, response);
-		} else if("insert".equalsIgnoreCase(method)){ // 新增班级信息
+		} else if ("insert".equalsIgnoreCase(method)) { // 新增班级信息
 			insert(request, response);
-		} else if("delete".equalsIgnoreCase(method)){ // 删除班级信息
+		} else if ("delete".equalsIgnoreCase(method)) { // 删除班级信息
 			delete(request, response);
-		}else if("modify".equalsIgnoreCase(method)){ // 修改班级信息
+		} else if ("modify".equalsIgnoreCase(method)) { // 修改班级信息
 			modify(request, response);
 		}
 		
@@ -128,6 +130,7 @@ public class ClassesServlet extends HttpServlet {
 		//返回数据
         response.getWriter().write(jsonArr.toString());
 	}
+	
 
 	public void getPagingClasses(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		/*

@@ -18,8 +18,7 @@
 					 	{"menuid":"1","icon":"","menuname":"基础信息管理",
 							"menus":[
 									/* {"menuid":"11","menuname":"学校信息","icon":"icon-house","url":"GradeServlet?method=toGradeListView"}, */
-									{"menuid":"12","menuname":"年级信息","icon":"icon-house","url":"GradeServlet?method=toGradeListView"},
-									{"menuid":"13","menuname":"班级信息","icon":"icon-house","url":"ClassesServlet?method=toClassesListView"}
+									{"menuid":"12","menuname":"年级信息","icon":"icon-house","url":"GradeServlet?method=toGradeListView"}
 								]
 						},
 						
@@ -33,42 +32,49 @@
 						
 						{"menuid":"3","icon":"","menuname":"教师信息管理",
 							"menus":[
-									{"menuid":"31","menuname":"教师列表","icon":"icon-user-teacher","url":"TeacherServlet?method=toTeacherListView"},
+									{"menuid":"31","menuname":"教师信息列表","icon":"icon-user-teacher","url":"TeacherServlet?method=toTeacherListView"},
 									{"menuid":"32","menuname":"教师课程表","icon":"icon-user-teacher","url":"TeacherServlet?method=toTeacherCourseListView"}
 								]
 						},
 						
-						{"menuid":"4","icon":"","menuname":"课程信息管理",
+						{"menuid":"4","icon":"","menuname":"班级信息管理",
 							"menus":[
-									{"menuid":"41","menuname":"课程列表","icon":"icon-book-open","url":"CourseServlet?method=toCourseListView"}
+									{"menuid":"41","menuname":"班级信息列表","icon":"icon-house","url":"ClassesServlet?method=toClassesListView"},
+									{"menuid":"42","menuname":"班级学生列表","icon":"icon-house","url":"ClassesServlet?method=toClassesStudentListView"}
 								]
 						},
 						
-						{"menuid":"5","icon":"","menuname":"成绩统计分析",
+						{"menuid":"5","icon":"","menuname":"课程信息管理",
 							"menus":[
-									{"menuid":"51","menuname":"考试列表","icon":"icon-exam","url":"ExamServlet?method=toExamListView"}
+									{"menuid":"51","menuname":"课程列表","icon":"icon-book-open","url":"CourseServlet?method=toCourseListView"}
 								]
 						},
 						
-						{"menuid":"6","icon":"","menuname":"比赛信息管理",
+						{"menuid":"6","icon":"","menuname":"成绩统计分析",
 							"menus":[
-									{"menuid":"61","menuname":"比赛列表","icon":"icon-exam","url":"GameServlet?method=toGameListView"},
-									{"menuid":"62","menuname":"比赛报名","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
-									{"menuid":"63","menuname":"查询比赛","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"}
+									{"menuid":"61","menuname":"考试列表","icon":"icon-exam","url":"ExamServlet?method=toExamListView"}
 								]
 						},
 						
-						{"menuid":"7","icon":"","menuname":"考级信息管理",
+						{"menuid":"7","icon":"","menuname":"比赛信息管理",
 							"menus":[
-									{"menuid":"71","menuname":"考级列表","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
-									{"menuid":"72","menuname":"考级报名","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
-									{"menuid":"73","menuname":"查询考级","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"}
+									{"menuid":"71","menuname":"比赛列表","icon":"icon-exam","url":"GameServlet?method=toGameListView"},
+									{"menuid":"72","menuname":"比赛报名","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
+									{"menuid":"73","menuname":"查询比赛","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"}
 								]
 						},
 						
-						{"menuid":"8","icon":"","menuname":"系统管理",
+						{"menuid":"8","icon":"","menuname":"考级信息管理",
 							"menus":[
-							        {"menuid":"81","menuname":"系统设置","icon":"icon-set","url":"SystemServlet?method=toAdminPersonalView"}
+									{"menuid":"81","menuname":"考级列表","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
+									{"menuid":"82","menuname":"考级报名","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"},
+									{"menuid":"83","menuname":"查询考级","icon":"icon-exam","url":"TeacherServlet?method=toTeacherListView"}
+								]
+						},
+						
+						{"menuid":"9","icon":"","menuname":"系统管理",
+							"menus":[
+							        {"menuid":"91","menuname":"系统设置","icon":"icon-set","url":"SystemServlet?method=toAdminPersonalView"}
 								]
 						}
 				]};
