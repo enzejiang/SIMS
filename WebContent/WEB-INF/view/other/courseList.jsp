@@ -25,12 +25,12 @@
 	        singleSelect: true,//是否单选 
 	        pagination: false,//分页控件 
 	        rownumbers: true,//行号 
-	        sortName:'id',
-	        sortOrder:'DESC', 
+	        sortName:'name',
+	        sortOrder:'ASC', 
 	        remoteSort: false,
 	        columns: [[  
-				{field:'chk',checkbox: true,width:50},
- 		        {field:'id',title:'ID',width:50, sortable: true},    
+				/* {field:'chk',checkbox: true,width:50},
+ 		        {field:'id',title:'ID',width:50, sortable: true},   */  
  		        {field:'name',title:'课程名称',width:200},
 	 		]], 
 	        toolbar: "#toolbar"

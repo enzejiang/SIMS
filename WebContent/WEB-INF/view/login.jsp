@@ -123,7 +123,7 @@
 		
 		<div class="radio-box">
 			<input type="radio" id="radio-4" name="type" value="4" checked />
-			<label for="radio-4">产品经理</label>
+			<label for="radio-4">产品开发</label>
 		</div>
 	</div>
       

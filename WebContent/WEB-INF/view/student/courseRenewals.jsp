@@ -50,6 +50,7 @@
 		
 	 	// 清空查询条件
 	    $("#clear_btn").click(function() {
+	    	$("#classesId").combobox("setValue", "");
 	    	$("#query_form").get(0).reset();
 	    });
 	    
